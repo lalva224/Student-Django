@@ -29,22 +29,23 @@ class CRUD_subject(APIView):
         if subject.is_valid():
             subject.save()
             return Response(status=status.HTTP_201_CREATED)
-        return Response(status =status.HTTP_400_BAD_REQUEST)
-    
-    def put(self,request,data):
-        try:
-            subject = None
-            if isinstance(data,int):
-                subject = Subject.objects.get(id=data)
-            else:
-                subject = Subject.objects.get(subject_name=data)
-        except Subject.DoesNotExist:
-            return Response(status = status.HTTP_400_BAD_REQUEST)
+        return Response(subject.errors,status =status.HTTP_400_BAD_REQUEST)
+     
+    def put(self,request,info):
+        subject = None
+        if isinstance(info,int):
+            subject = Subject.objects.get(id=info)
+        else:
+            subject = Subject.objects.get(subject_name=info.title())
         
         #a put just pass the request data, with a patch (partial update) you need the actual object
         updatedSubject = SubjectSerializer(subject,data=request.data)
-        updatedSubject.save()
-        return Response(status = status.HTTP_200_OK)
+        if updatedSubject.is_valid():
+            updatedSubject.save()
+            return Response(status = status.HTTP_200_OK)
+        return Response(updatedSubject.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+
     
     def delete(self,request,data):
         try:

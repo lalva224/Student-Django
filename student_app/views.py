@@ -26,7 +26,7 @@ class CRUD_Student(APIView):
             else:
                 stud = Student.objects.get(name=data.title())
             
-            return Response(StudentAllSerializer(stud).data)  
+            return Response(StudentAllSerializer(stud).data,status=status.HTTP_200_OK)  
         except Student.DoesNotExist:
             return NotFound('Student not found')
     

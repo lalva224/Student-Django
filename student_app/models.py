@@ -1,6 +1,6 @@
 from django.db import models
 from django.core import validators as v
-from .validators import validate_combination_format,validate_name_format,validate_school_email
+from student_app.validators import validate_combination_format,validate_name_format,validate_school_email
 from subject_app.models import Subject
 
 
